@@ -21,13 +21,6 @@ A modern real-time currency converter built with **HTML, CSS, and JavaScript**.
 - Chart.js
 - ExchangeRate API
 
-## Project Structure
-currency-converter/
-│
-├── index.html
-├── styles.css
-└── script.js
-
 ## Live Demo
 
 https://99alexandros.github.io/currency-converter
