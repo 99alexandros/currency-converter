@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <main class="container">
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+              <path d="M12 6v2m0 8v2" />
+            </svg>
+          </div>
+          <div>
+            <h1>Currency Converter</h1>
+            <p class="subtitle">Live exchange rates</p>
+          </div>
+          <div class="status-dot" id="statusDot" title="Fetching rates…"></div>
+        </div>
+
+        <div class="card-body">
+          <!-- Amount -->
+          <div class="field-group">
+            <label for="amount">Amount</label>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                id="amount"
+                value="1"
+                min="0"
+                step="any"
+                placeholder="Enter amount"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <!-- Currency selectors -->
+          <div class="currency-row">
+            <div class="field-group flex-1">
+              <label>From</label>
+              <div class="currency-dropdown" id="fromDropdown">
+                <button class="dd-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="dd-flag">🌐</span>
+                  <span class="dd-info">
+                    <span class="dd-code">—</span>
+                    <span class="dd-name">Loading…</span>
+                  </span>
+                  <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                <div class="dd-panel" hidden>
+                  <input class="dd-search" type="text" placeholder="Search currencies…" autocomplete="off" spellcheck="false">
+                  <ul class="dd-list" role="listbox"></ul>
+                </div>
+              </div>
+            </div>
+
+            <button class="swap-btn" id="swapBtn" title="Swap currencies" aria-label="Swap currencies">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M7 16V4m0 0L3 8m4-4l4 4" />
+                <path d="M17 8v12m0 0l4-4m-4 4l-4-4" />
+              </svg>
+            </button>
+
+            <div class="field-group flex-1">
+              <label>To</label>
+              <div class="currency-dropdown" id="toDropdown">
+                <button class="dd-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="dd-flag">🌐</span>
+                  <span class="dd-info">
+                    <span class="dd-code">—</span>
+                    <span class="dd-name">Loading…</span>
+                  </span>
+                  <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                <div class="dd-panel" hidden>
+                  <input class="dd-search" type="text" placeholder="Search currencies…" autocomplete="off" spellcheck="false">
+                  <ul class="dd-list" role="listbox"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="result-card" id="resultCard">
+            <div class="result-label">Converted Amount</div>
+            <div class="result-amount" id="resultAmount">
+              <span class="skeleton"></span>
+            </div>
+            <div class="result-rate" id="resultRate"></div>
+          </div>
+
+          <!-- Error -->
+          <div class="error-banner" id="errorBanner" hidden>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span id="errorMessage">Something went wrong.</span>
+          </div>
+
+          <!-- Last updated -->
+          <div class="footer-meta" id="lastUpdated"></div>
+        </div>
+      </div>
+      <!-- Trend Chart -->
+      <div class="section-card" id="chartCard">
+        <div class="section-header">
+          <div>
+            <div class="section-title">7-Day Trend</div>
+            <div id="chartPair" class="chart-pair"></div>
+          </div>
+          <span id="chartTrend" class="chart-trend"></span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Conversion History -->
+      <div class="section-card" id="historyCard">
+        <div class="section-header">
+          <div class="section-title">Recent Conversions</div>
+          <button class="icon-btn" id="clearHistoryBtn" title="Clear history" aria-label="Clear history">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+          </button>
+        </div>
+        <div id="historyList">
+          <div class="history-empty">No conversions yet</div>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
