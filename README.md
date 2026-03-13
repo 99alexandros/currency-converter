@@ -2,8 +2,6 @@
 
 A modern, real-time currency converter with a glassmorphism UI built with vanilla HTML, CSS, and JavaScript.
 
-![Screenshot placeholder](screenshot.png)
-
 ## Features
 
 - **Live exchange rates** — fetches real-time rates from the ExchangeRate-API v6
